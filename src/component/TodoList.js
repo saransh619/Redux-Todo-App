@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addTodo, deleteTodo, removeTodo, editTodo, saveTodo } from '../actions/index';
 
 const TodoList = () => {
-
     const [inputData, setInputData] = useState('');
     const [items, setItems] = useState([]);
     const [toogleSubmit, setToggleSubmit] = useState(true);
@@ -34,6 +33,21 @@ const TodoList = () => {
         setInputData(elem.data);
         setIsEditItem(elem.id);
     }
+
+    //Firebase
+    const postData = async (e) => {
+        e.preventDefault();
+        const res = await fetch("https://reduxtodolist-default-rtdb.firebaseio.com//reduxTodoList.json",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                myList: list,
+            })
+        }) 
+    }
+
     return (
         <>
             <div className="main-div">
@@ -63,6 +77,10 @@ const TodoList = () => {
                                 )
                             })
                         }
+                    </div>
+
+                    <div className="showItems">
+                        <button className="btn" target="_blank" onClick={postData}>SEND DATA</button>
                     </div>
 
                     <div className="showItems">
